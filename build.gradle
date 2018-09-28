@@ -34,6 +34,9 @@ dependencies {
     compile 'com.github.haifengl:smile-netlib:1.5.1'
     compile 'com.github.haifengl:smile-data:1.5.1'
     compile 'com.github.haifengl:smile-nlp:1.5.1'
+    
+    //for arima models
+    compile 'com.workday:timeseries-forecast:1.1.1'
   
    
 }

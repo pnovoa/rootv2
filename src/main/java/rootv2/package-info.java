@@ -5,4 +5,4 @@
  * @author pavel
  *
  */
-package rootv2.main;
+package rootv2;
