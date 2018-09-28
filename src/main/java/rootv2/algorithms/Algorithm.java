@@ -9,5 +9,5 @@ package rootv2.algorithms;
  */
 public interface Algorithm<AlgorithmStateType> {
 
-	
+	public void run();
 }
