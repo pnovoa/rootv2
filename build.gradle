@@ -25,7 +25,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     
     
-    compile 'commons-cli:commons-cli:1.4'
+    //compile 'commons-cli:commons-cli:1.4'
     compile 'org.apache.commons:commons-math3:3.6.1'
     
 	compile 'com.github.haifengl:smile-core:1.5.1'
@@ -37,6 +37,8 @@ dependencies {
     
     //for arima models
     compile 'com.workday:timeseries-forecast:1.1.1'
+    
+    compile 'info.picocli:picocli:3.6.1'
   
    
 }

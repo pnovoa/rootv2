@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-
 import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
@@ -16,7 +15,6 @@ import smile.math.random.UniversalGenerator;
 import smile.math.rbf.GaussianRadialBasis;
 import smile.math.rbf.InverseMultiquadricRadialBasis;
 import smile.math.rbf.MultiquadricRadialBasis;
-import smile.math.rbf.RadialBasisFunction;
 import smile.math.rbf.ThinPlateRadialBasis;
 import smile.regression.RBFNetwork;
 

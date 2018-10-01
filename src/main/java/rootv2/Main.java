@@ -9,31 +9,39 @@ package rootv2;
  */
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 import rootv2.algorithms.Algorithm;
 import rootv2.algorithms.IDEAL_ALG;
 import rootv2.algorithms.PSO;
+import rootv2.algorithms.PSOARKPAST;
 import rootv2.algorithms.PSOHE;
 import rootv2.algorithms.PSORBF_AR;
-import rootv2.algorithms.PSOAR_KPAST;
 import rootv2.algorithms.PSO_KFUTURE;
 
-public class Main {
 
-public static int TIME_WINDOWS[] = { 2, 6, 10 };
-public static int CHANGE_TYPE[] = { 1, 2, 3, 4, 5, 6 };
-	
-	
-//	public static int TIME_WINDOWS[] = { 2, 6, 10};
-//	public static int CHANGE_TYPE[] = {2};
+@Command(description = "Execute a ROOT experiment for a given algorithm and the RMPBI problem",
+name = "root", mixinStandardHelpOptions = true, version = "root 2.0",
+subcommands = {
+	    RMPBI.class
+}
+		)
+public class Main implements Runnable{
 
+
+	public static int TIME_WINDOWS[] = { 2, 6, 10 };
+
+	public static int CHANGE_TYPE[] = { 1, 2, 3, 4, 5, 6 };
+
+	
 	static int numRuns = 20;
 
 	static double robutness[] = new double[numRuns];
@@ -43,7 +51,53 @@ public static int CHANGE_TYPE[] = { 1, 2, 3, 4, 5, 6 };
 	};
 	
 	public static void main(String[] args) {
+		
+		Main main = new Main();
+		CommandLine line = new CommandLine(main);
+		//CommandLine.run(main, args);
+		List<CommandLine> parsed = line.parse(args);
+		//System.out.println("The number of runs is: " + main.runs);
+		
+		System.out.println(((Main) parsed.get(0).getCommand()).algo.instanceName());
+		
+		if(parsed.size()>1) {
+			RMPBI problem = (RMPBI)parsed.get(1).getCommand();
+			System.out.println("The learning period is: " + problem.learningPeriod);
+		}
+		/*Options options = Main.buildOptions();
+		
+		CommandLineParser parser = new DefaultParser();
+		
+		try {
+	        // parse the command line arguments
+	        CommandLine line = parser.parse( options, args );
+	        
+	        System.out.println(line.getArgList());
+	        
+	        if( line.hasOption( "r" ) ) {
+	        	
+	            System.out.println(line.getOptionValue("r"));
+	        }
+	        if( line.hasOption( "a" ) ) {
+	            System.out.println(line.getOptionValue("a"));
+	        }
+	        
+	    }
+	    catch( ParseException exp ) {
+	        // oops, something went wrong
+	        System.err.println( "Parsing failed.  Reason: " + exp.getMessage() );
+	    }
+	    */
+		
+	}
+	
+	
+	public static void main2(String[] args) {
 
+		//Options
+		
+		
+		
 		// System.out.println(args[0]);
 		Algorithm alg;
 		if (args[0].trim().compareTo("PSO") == 0) {
@@ -70,7 +124,7 @@ public static int CHANGE_TYPE[] = { 1, 2, 3, 4, 5, 6 };
 			alg = algpso;
 		} else if(args[0].trim().compareTo("PSO_AR_KPAST") == 0) {
 		
-			PSOAR_KPAST algpso = new PSOAR_KPAST();
+			PSOARKPAST algpso = new PSOARKPAST();
 			
 			algpso.arOrder = Integer.parseInt(args[1]);
 			
@@ -212,5 +266,57 @@ public static int CHANGE_TYPE[] = { 1, 2, 3, 4, 5, 6 };
 
 		return result;
 	}
+	
+	
+	
+	//Number of runs to execute
+	 @Option(names = { "-r", "--runs" }, paramLabel = "RUNS", description = "independent runs")
+	    private int runs = 12;
+	 
+	 @Option(names= {"-A", "--algorithm"}, converter = AlgorithmConverter.class, paramLabel = "ALGORITHM", description = "the algorithm used for the experiment")
+	private Algorithm algo;
+	
+	@Override
+	public void run(){
+		
+		System.out.println("Number of runs is " + runs);
+		System.out.println("The algorithm is: " + this.algo.instanceName());
+		
+	}
+	
+	
+	
+	/*public static Options buildOptions() {
+		
+		Options options = new Options();
+		
+		Option runs = Option.builder("r")
+							.argName("r")
+							.longOpt("nruns")
+							.required()
+							.hasArg()
+							.build();
+		options.addOption(runs);
+		
+		Option alg = Option.builder("a")
+				.argName("a")
+				.longOpt("alg_name")
+				.required()
+				.hasArg()
+				.build();
+		options.addOption(alg);
+		
+		
+		Option prob = Option.builder("p")
+				.argName("a")
+				.longOpt("alg_name")
+				.required()
+				.hasArg()
+				.build();
+		options.addOption(alg);
+		
+		return options;
+		
+	}*/
 
 }

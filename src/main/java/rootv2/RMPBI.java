@@ -7,6 +7,12 @@ import java.util.Random;
 import org.apache.commons.math3.linear.MatrixUtils;
 import org.apache.commons.math3.linear.RealMatrix;
 
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
+
+@Command(name = "rmpbi", description = "The RMPBI problem",
+ mixinStandardHelpOptions = true, version = "RMPBI 2.0")
+
 public class RMPBI {
 
 	public class Environment {
@@ -24,11 +30,28 @@ public class RMPBI {
 
 	}
 	
-	public final int learningPeriod=20;
+	@Option(names = { "-l", "--learning_period" }, paramLabel = "LEARNING_PERIOD", description = "Period for learning the environments by the algorithm")
+	public int learningPeriod=20;
+	
+	@Option(names = { "-p", "--number_of_peaks" }, paramLabel = "NUMBER_PEAKS", description = "Number of peaks in the for each dimension")
+	public int numPeaks = 5;
+	
+	@Option(names = { "-w", "--time_windows" }, paramLabel = "TIME_WINDOWS", description = "Number of future environments for robustness computation")
+	public int timeWindows = 2;
+	// computational budget (delta e)
+	@Option(names = { "-b", "--computational_budget" }, paramLabel = "COMP_BUDGET", description = "Number of function evaluations without changes")
+	public int computationalBudget = 2500;
 
+	@Option(names = { "-c", "--number_of_changes" }, paramLabel = "NUMBER_OF_CHANGES", description = "Number of changes")
+	// number of changes
+	public int numChanges = 100;
+	@Option(names = { "-s", "--random_seed" }, paramLabel = "RANDOM_SEED", description = "Seed for the random number generation")
+	public int seed = 22;
+	
+	@Option(names = { "-t", "--change_type" }, paramLabel = "CHANGE_TYPE", description = "Change type")
+	public int changeType;
+	
 	public final int dimension = 2;
-	final int numPeaks = 5;
-
 	public final double minCoord = -25;
 	public final double maxCoord = 25;
 
@@ -58,21 +81,16 @@ public class RMPBI {
 	// noisy severity
 	final double noisySev = 0.8;
 	// time windows
-	public int timeWindows = 2;
-	// computational budget (delta e)
-	public final int computationalBudget = 2500;
-
-	// number of changes
-	int numChanges = 100;
+	
 	public ArrayList<Environment> environments;
-	int seed = 22;
+	
 	Random rand;
 
 	ChangeType changeFunction;
 
 	public int currEnvironment;
 	
-	public int changeType;
+	
 
 	public void init() {
 		

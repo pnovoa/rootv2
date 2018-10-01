@@ -12,7 +12,7 @@ import rootv2.Main;
 import rootv2.RMPBI;
 import smile.math.random.UniversalGenerator;
 
-public class PSOAR_KPAST extends Algorithm {
+public class PSOARKPAST extends Algorithm {
 
 	//Study parameters
 	
@@ -79,7 +79,7 @@ public class PSOAR_KPAST extends Algorithm {
 	Particle gBest;
 	public String rbfName;
 	
-	public PSOAR_KPAST() {
+	public PSOARKPAST() {
 		
 		super();
 		pSize= 50;
@@ -91,7 +91,7 @@ public class PSOAR_KPAST extends Algorithm {
 	
 	@Override
 	public String instanceName() {
-		return String.format(Locale.US, "PSO_AR-%d_KPAST",arOrder);
+		return String.format(Locale.US, "PSO_AR-%d_KPAST", arOrder);
 	}
 
 	
