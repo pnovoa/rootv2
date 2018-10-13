@@ -1,4 +1,4 @@
-package rootv2.algorithms;
+package root.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,11 +8,11 @@ import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
 
-import rootv2.Main;
-import rootv2.RMPBI;
+import root.Main;
+import root.RMPBI;
 import smile.math.random.UniversalGenerator;
 
-public class PSOARKPAST extends Algorithm {
+public class PSOAR_KPAST extends Algorithm {
 
 	//Study parameters
 	
@@ -79,7 +79,7 @@ public class PSOARKPAST extends Algorithm {
 	Particle gBest;
 	public String rbfName;
 	
-	public PSOARKPAST() {
+	public PSOAR_KPAST() {
 		
 		super();
 		pSize= 50;
@@ -91,7 +91,7 @@ public class PSOARKPAST extends Algorithm {
 	
 	@Override
 	public String instanceName() {
-		return String.format(Locale.US, "PSO_AR-%d_KPAST", arOrder);
+		return String.format(Locale.US, "PSO_AR-%d_KPAST",arOrder);
 	}
 
 	

@@ -1,4 +1,4 @@
-package rootv2.algorithms;
+package root.algorithms;
 
 import java.util.Locale;
 
@@ -41,7 +41,12 @@ public class IDEAL_ALG extends Algorithm {
 
 	@Override
 	public double[] bestSolution() {
-		return problem.findBestSolution(problem.currEnvironment);
+		double theoX[] = problem.findBestSolution();
+		double theoY = theoX[problem.dimension];
+		double pracF = problem.trueEval(theoX);
+		System.out.println(theoY-pracF);
+		
+		return theoX;
 	}
 
 }

@@ -1,12 +1,16 @@
-package rootv2.algorithms;
+package root.algorithms;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
-import rootv2.Main;
+import root.Main;
+import root.RMPBI;
 import smile.math.random.UniversalGenerator;
 
-public class PSO extends Algorithm{
+public class PSO_KFUTURE extends Algorithm {
 
+	//Study parameters
+	
 	final double psoC = 1.496;
 	final double psoW = .729;
 	
@@ -15,6 +19,7 @@ public class PSO extends Algorithm{
 		
 		double[] x;
 		double fitness;
+		double currFitness;
 
 		double[] v;
 
@@ -28,6 +33,7 @@ public class PSO extends Algorithm{
 			v = new double[problem.dimension];
 			fitness = Double.NEGATIVE_INFINITY;
 			pfitness = Double.NEGATIVE_INFINITY;
+			currFitness = Double.NEGATIVE_INFINITY;
 			
 		}
 		
@@ -40,6 +46,7 @@ public class PSO extends Algorithm{
 
 			fitness = p.fitness;
 			pfitness = p.pfitness;
+			currFitness = p.currFitness;
 		}
 
 		public void updatePBest() {
@@ -52,32 +59,67 @@ public class PSO extends Algorithm{
 		}
 
 	}
+	
 
-	int currEval;
+	
+	int currEnviroment=0;
 	ArrayList<Particle> swarm;
 	Particle gBest;
+	public String rbfName;
 	
-	public PSO() {
+	public PSO_KFUTURE() {
+		
 		super();
 		pSize= 50;
 		seed = 112332;
 	}
 	
 	
+	
+	
+	@Override
+	public String instanceName() {
+		return String.format(Locale.US, "PSO-KFUTURE");
+	}
+
+	
+
+
+	@Override
+	public String factors() {
+		return String.format(Locale.US, "\"%s\",%d,%.3f,%d","kfuture",0,0.,0);
+	}
+
+
+
+
 	@Override
 	public void init() {
 		
+		currEnviroment = 0;
 		swarm = new ArrayList<Particle>();
 		gBest = new Particle();
 		rand = new UniversalGenerator(seed);
-		currEval=0;
 
 		for (int i = 0; i < pSize; i++) {
 			Particle p = new Particle();
 			initParticle(p);
+			
+			p.fitness = problem.eval(p.x);
+			p.currFitness = p.fitness;
+			p.pfitness = p.fitness;
+			if (p.fitness > gBest.fitness) {
+				gBest.copy(p);
+			}
+			
 			swarm.add(p);
+			
 		}
+		
+		
 	}
+	
+	
 	
 	protected Particle initParticle(Particle p) {
 		
@@ -95,12 +137,6 @@ public class PSO extends Algorithm{
 				p.v[d] = 0.5 * (p.x[d] - p.v[d]);
 			}
 
-			p.fitness = problem.eval(p.x);
-			p.pfitness = p.fitness;
-			if (p.fitness > gBest.fitness) {
-				gBest.copy(p);
-			}
-
 		}
 		
 		return p;
@@ -109,20 +145,33 @@ public class PSO extends Algorithm{
 	@Override
 	public void initWithMemory() {
 		
-		gBest.fitness = problem.eval(gBest.x);
+		currEnviroment++;
+	
+		
+		
+		gBest.currFitness = problem.eval(gBest.x);
+		gBest.fitness = eval(swarm.get(0));
 		gBest.updatePBest();
 		
 		swarm.get(0).copy(gBest);
-		swarm.get(0).fitness = problem.eval(swarm.get(0).x);
-		swarm.get(0).updatePBest();
 		
+	
 		
 		for (int i = 1; i < pSize; i++) {
 
 			Particle p = swarm.get(i);
-
 			initParticle(p);
+			
+			p.currFitness = problem.eval(p.x);
+			p.fitness = eval(p);
+			p.updatePBest();
+			
+			if (p.fitness > gBest.fitness) {
+				gBest.copy(p);
+			}
+			
 		}
+		
 	}
 	
 	
@@ -134,26 +183,11 @@ public class PSO extends Algorithm{
 
 			Particle p = swarm.get(i);
 			iterateParticle(p);
+			
+		
 		}
 	}
 	
-	
-	
-	@Override
-	public String instanceName() {
-		
-		return "PSO";
-	}
-	
-	
-
-
-	@Override
-	public String factors() {
-		return "\"PSO\"";
-	}
-
-
 	protected void iterateParticle(Particle p) {
 		
 		for (int d = 0; d < problem.dimension; d++) {
@@ -177,7 +211,8 @@ public class PSO extends Algorithm{
 		}
 		
 		// evaluation
-		p.fitness = problem.eval(p.x);
+		p.currFitness = problem.eval(p.x);
+		p.fitness = eval(p);
 		
 		if(p.fitness>p.pfitness) {
 			p.updatePBest();
@@ -194,9 +229,18 @@ public class PSO extends Algorithm{
 		return gBest.x;
 	}
 	
-	protected double eval(double[] x) {
-		currEval++;
-		return problem.eval(x);
+	protected double eval(Particle p) {
+		
+		double[] x = p.x;
+		
+		if (currEnviroment < problem.learningPeriod) {
+			
+			return p.currFitness;
+		}
+		
+		double result = problem.trueEval(x);
+				
+		return result;
 	}
 	
 	

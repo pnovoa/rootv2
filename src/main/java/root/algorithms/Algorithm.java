@@ -1,6 +1,6 @@
-package rootv2.algorithms;
+package root.algorithms;
 
-import rootv2.RMPBI;
+import root.RMPBI;
 import smile.math.random.UniversalGenerator;
 
 public abstract class Algorithm{
@@ -25,5 +25,23 @@ public abstract class Algorithm{
 	
 	public abstract double[] bestSolution();
 	
+	public double getApproximationError() {
+		return 0.;
+	}
 	
+	public double getPredictionError() {
+		return 0.;
+	}
+	
+	public double getBuildingModelTime() {
+		return 0.;
+	}
+	
+	public double getEvalPastTime() {
+		return 0.;
+	}
+	
+	public double bestFitness() {
+		return 0.;
+	}
 }

@@ -1,4 +1,4 @@
-package rootv2.algorithms;
+package root.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
 
-import rootv2.Main;
+import root.Main;
 import smile.clustering.KMeans;
 import smile.math.distance.EuclideanDistance;
 import smile.math.random.UniversalGenerator;
@@ -123,13 +123,25 @@ public class PSORBF_AR extends Algorithm {
 	public void init() {
 		
 		if(rbfName.compareTo("gaussian")==0) {
-			rbfunction = new GaussianRadialBasis(scalingFactor);
+			if(scalingFactor!=0)
+				rbfunction = new GaussianRadialBasis(scalingFactor);
+			else
+				rbfunction = new GaussianRadialBasis();
 		} else if(rbfName.compareTo("thinplate")==0) {
-			rbfunction = new ThinPlateRadialBasis(scalingFactor);
+			if(scalingFactor!=0)
+				rbfunction = new ThinPlateRadialBasis(scalingFactor);
+			else
+				rbfunction = new ThinPlateRadialBasis();
 		} else if(rbfName.compareTo("inverse")==0) {
+			if(scalingFactor!=0)
 			rbfunction = new InverseMultiquadricRadialBasis(scalingFactor);
+			else
+				rbfunction = new InverseMultiquadricRadialBasis();
 		} else if(rbfName.compareTo("multiquadric")==0) {
-			rbfunction = new MultiquadricRadialBasis(scalingFactor);
+			if(scalingFactor!=0)
+				rbfunction = new MultiquadricRadialBasis(scalingFactor);
+			else
+				rbfunction = new MultiquadricRadialBasis();
 		} 
 		
 		

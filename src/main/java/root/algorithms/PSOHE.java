@@ -1,4 +1,4 @@
-package rootv2.algorithms;
+package root.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,7 +8,7 @@ import com.workday.insights.timeseries.arima.Arima;
 import com.workday.insights.timeseries.arima.struct.ArimaParams;
 import com.workday.insights.timeseries.arima.struct.ForecastResult;
 
-import rootv2.Main;
+import root.Main;
 import smile.clustering.KMeans;
 import smile.math.distance.EuclideanDistance;
 import smile.math.random.UniversalGenerator;
@@ -21,7 +21,6 @@ import smile.regression.RBFNetwork;
 public class PSOHE extends Algorithm {
 
 	private class RBFNetworkEnsemble{
-		
 		
 		RBFNetwork<double[]> gaussianRBFN;
 		RBFNetwork<double[]> thinplateRBFN;
