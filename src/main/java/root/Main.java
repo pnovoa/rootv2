@@ -21,12 +21,12 @@ import root.algorithms.PSO_KFUTURE;
 
 public class Main {
 
-public static int TIME_WINDOWS[] = {2, 6, 10 };
-public static int CHANGE_TYPE[] = { 1, 2, 3, 4, 5, 6 };
+public static int TIME_WINDOWS[] = {2, 6, 10};
+public static int CHANGE_TYPE[] = {1,2,3,4,5,6};
 	
 //public static int TIME_WINDOWS[] = { 2 };
 //public static int CHANGE_TYPE[] = { 1 };
-public static int NUMBER_PEAKS[] = { 5, 10, 20};
+public static int NUMBER_PEAKS[] = {5};
 	
 	
 //	public static int TIME_WINDOWS[] = { 2, 6, 10};
@@ -46,6 +46,9 @@ public static int NUMBER_PEAKS[] = { 5, 10, 20};
 		// System.out.println(args[0]);
 
 		Algorithm alg;
+		
+		
+		
 		if (args[0].trim().compareTo("PSO") == 0) {
 			alg = new PSO();
 		} else if (args[0].trim().compareTo("PSORBF_AR") == 0) {
